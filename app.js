@@ -12,25 +12,25 @@ var newsApp = angular.module('newsApp', [
   'ngRoute'
 ]);
 
-/**
- * @return {String} url
- */ 
-function getPipeURL(id) {
-  var base = 'http://pipes.yahoo.com/pipes/pipe.run';
-
-  return base + '?_id=' + id + '&_render=json&_callback=JSON_CALLBACK';
-}
-
 newsApp.factory('News', ['$http', '$timeout', '$q',
                 function( $http ,  $timeout ,  $q ) {
-
-  var articles = [];
 
   var COUNT = 10;
 
   var PIPE_ID = 'DqsF_ZG72xGLbes9l7okhQ';
 
+  var articles = [];
+
   return {
+
+    /**
+     * @return {String} url
+     */
+    getPipeURL: function(id) {
+      var base = 'http://pipes.yahoo.com/pipes/pipe.run';
+
+      return base + '?_id=' + id + '&_render=json&_callback=JSON_CALLBACK';
+    },
 
     /**
      * @param  {Number|String} id Article id
@@ -63,7 +63,7 @@ newsApp.factory('News', ['$http', '$timeout', '$q',
       } else {
 
         $http.jsonp(
-          getPipeURL(PIPE_ID)
+          this.getPipeURL(PIPE_ID)
         ).success(function(data) {
 
           Array.prototype.push.apply(
@@ -116,16 +116,16 @@ newsApp.controller('ArticleCtrl', ['$scope', 'News', '$routeParams', '$sce',
 }]);
 
 newsApp.config(['$routeProvider', function($routeProvider) {
-  $routeProvider.
-    when('/', {
+  $routeProvider
+    .when('/', {
       templateUrl: 'main.html',
       controller: 'MainCtrl'
-    }).
-    when('/article/:articleId', {
+    })
+    .when('/article/:articleId', {
       templateUrl: 'article.html',
       controller: 'ArticleCtrl'
-    }).
-    otherwise({
+    })
+    .otherwise({
       redirectTo: '/'
     });
 }]);
