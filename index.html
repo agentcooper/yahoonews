@@ -1,0 +1,48 @@
+<!doctype HTML>
+<html>
+<head>
+  <title>NewsApp</title>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.27/angular.js"></script>
+  <script src="https://code.angularjs.org/1.2.27/angular-route.js"></script>
+  <script src="app.js"></script>
+
+  <link rel="stylesheet" href="http://getskeleton.com/dist/css/skeleton.css" />
+
+  <style>
+    .newsApp {
+      padding: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div ng-app="newsApp" class="newsApp">
+    <script type="text/ng-template" id="main.html">
+      <h1>Latest news</h1>
+
+      <ul>
+          <li ng-repeat="article in articles">
+              <a href="#/article/{{ article.id }}" ng-bind="article.title"></a>
+          </li>
+      </ul>
+    </script>
+
+    <script type="text/ng-template" id="article.html">
+        <p><a href="#/">Back to news</a></p>
+
+        <h2>{{ article.title }}</h2>
+
+        <p ng-if="article.author">{{ article.author }} at {{ article.pubDate }}</p>
+
+        <div ng-bind-html="article.description"></div>
+
+        <p><a href="{{ article.origLink }}" target="_blank">Open full story</a></p>
+
+        <p><a href="#/">Back to news</a></p>
+    </script>
+
+    <div ng-view></div>
+  </div>
+</body>
+
+</html>
